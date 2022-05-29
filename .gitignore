@@ -6,3 +6,6 @@ pickhardtpayments/__pycache__
 
 # not including large file with Channel Graph
 listchannels*.json
+
+# don't share logfile
+examples/pickhardt_pay.log
