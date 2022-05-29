@@ -12,6 +12,8 @@
 #
 import os
 import sys
+
+sys.path.insert(0, os.path.abspath('../../pickhardtpayments'))
 sys.path.insert(0, os.path.abspath('../../'))
 from datetime import datetime
 import subprocess
@@ -40,7 +42,6 @@ release = version
 # Usually you set "language" from the command line for these cases.
 language = None
 
-
 # -- General configuration ---------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -51,12 +52,14 @@ language = None
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.duration',
-    'sphinx.ext.doctest',
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
-    'sphinx.ext.intersphinx',
+    'sphinx.ext.napoleon'
 ]
+
+napoleon_google_docstring = False
+napoleon_use_param = False
+napoleon_use_ivar = True
 
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3/', None),
@@ -116,7 +119,6 @@ pygments_style = 'sphinx'
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
-
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -190,7 +192,7 @@ html_last_updated_fmt = '%b %d, %Y'
 
 # If false, no module index is generated.
 #
-# html_domain_indices = True
+html_domain_indices = True
 
 # If false, no index is generated.
 #

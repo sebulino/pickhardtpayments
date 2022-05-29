@@ -393,7 +393,6 @@ class SyncSimulatedPaymentSession:
 
             print("Runtime of flow computation: {:4.2f} sec ".format(runtime))
             print("\n================================================================\n")
-
             total_number_failed_paths += number_failed_paths
             total_fees += paid_fees
             cnt += 1
@@ -427,3 +426,6 @@ class SyncSimulatedPaymentSession:
         print("fee for settlement of delivery: {:8.3f} sat --> {} ppm".format(
             payment.settlement_fees/1000, int(payment.settlement_fees * 1000 / payment.total_amount)))
         print("used mu:", mu)
+
+# TODO check fee denominiation
+# "fee for settlement of delivery: 29199.838 sat --> 2919 ppm"

@@ -8,7 +8,7 @@ from SyncSimulatedPaymentSession import SyncSimulatedPaymentSession
 #you can get your own data set via:
 # $: lightning-cli listchannels > listchannels20220412.json
 # alternatively you can go to https://ln.rene-pickhardt.de to find a data dump
-channel_graph = ChannelGraph("listchannels20220412.json")
+channel_graph = ChannelGraph("../listchannels20220412.json")
 
 uncertainty_network = UncertaintyNetwork(channel_graph)
 oracle_lightning_network = OracleLightningNetwork(channel_graph)
