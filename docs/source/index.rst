@@ -18,12 +18,27 @@ how to `build and install` the project.
 
    readme
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Examples
+
+   basicexample.py <temp.rst>
+   simulation.py <temp.rst>
+
 
 .. toctree::
    :maxdepth: 4
    :caption: The Library
 
-   pickhardtpayments
+   pickhardtpayments/Channel
+   pickhardtpayments/ChannelGraph
+   pickhardtpayments/OracleChannel
+   pickhardtpayments/UncertaintyChannel
+   pickhardtpayments/Attempt
+   pickhardtpayments/Payment
+   pickhardtpayments/OracleLightningNetwork
+   pickhardtpayments/UncertaintyNetwork
+   pickhardtpayments/SyncSimulatedPaymentSession
 
 
 
