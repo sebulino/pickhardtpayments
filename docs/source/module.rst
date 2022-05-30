@@ -1,4 +1,4 @@
-Module contents
+All Contents
 ---------------
 
 .. automodule:: pickhardtpayments
