@@ -1,7 +1,7 @@
-OracleChannel Class
+UncertaintyChannel Class
 --------------------------------
 
-.. automodule:: OracleChannel
+.. automodule:: UncertaintyChannel
    :noindex:
    :members:
    :undoc-members:
