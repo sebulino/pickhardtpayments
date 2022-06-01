@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="1570e1af-0375-4ea5-b997-6ca0bf8432d3" name="Changes" comment="minor errors fixed" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="payments_attempts" />
+  </component>
+  <component name="Git.Rebase.Settings">
+    <option name="NEW_BASE" value="main" />
+    <option name="OPTIONS">
+      <set>
+        <option value="INTERACTIVE" />
+      </set>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$/../../pickhardtpayments" source="main" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="renepickhardt-payment_sequence_sim" />
+        <entry key="$PROJECT_DIR$/../../pickhardtpayments" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="MIXED" />
+  </component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="false" />
+    <option name="FILTER_DEBUG" value="false" />
+    <option name="CUSTOM_FILTER" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectId" id="294P74Ziz37xLkDkLAe0M5itIph" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Users/sebulino/Documents/stud/Thesis/Lightning/pickhardtpayments/docs/source/pickhardtpayments",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "run.code.analysis.last.selected.profile": "aDefault",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/docs/source/pickhardtpayments" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/docs/source" />
+      <recent name="$PROJECT_DIR$/docs/source/generated" />
+      <recent name="$PROJECT_DIR$/../../pickhardtpayments/docs/source" />
+      <recent name="$PROJECT_DIR$/../../pickhardtpayments" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.basicexample">
+    <configuration name="basicexample" type="PythonConfigurationType" factoryName="Python">
+      <log_file alias="pickhardt_pay" path="$PROJECT_DIR$/pickhardt_pay.log" />
+      <module name="pickhardtpayments" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/local/bin/python3" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/examples" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/examples/basicexample.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="create Sphinx Documentation" type="docs" factoryName="Sphinx task">
+      <module name="pickhardtpayments" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="/usr/local/bin/python3" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="docutils_input_file" value="$PROJECT_DIR$" />
+      <option name="docutils_output_file" value="$PROJECT_DIR$/../pickhardtpayments_doc" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="html" />
+      <option name="docutils_open_in_browser" value="false" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.basicexample" />
+      <item itemvalue="Python docs.create Sphinx Documentation" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1570e1af-0375-4ea5-b997-6ca0bf8432d3" name="Changes" comment="" />
+      <created>1652369214377</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1652369214377</updated>
+      <workItem from="1652369220932" duration="13495000" />
+      <workItem from="1652449868515" duration="109219000" />
+      <workItem from="1653559339087" duration="16830000" />
+      <workItem from="1653587136539" duration="17745000" />
+      <workItem from="1653857718179" duration="22574000" />
+    </task>
+    <task id="LOCAL-00001" summary="New Class SyncPaymentSession() inherits from SyncSimulatedPaymentSession. &#10;method 'pickhardt_pay' is overloaded but has no functionality yet.">
+      <created>1652369942691</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1652369942691</updated>
+    </task>
+    <task id="LOCAL-00002" summary="update with loop on two random nodes from ChannelGraph for payment">
+      <created>1652432608755</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1652432608755</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Minor update on typos, more todos.">
+      <created>1652449446995</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1652449446995</updated>
+    </task>
+    <task id="LOCAL-00005" summary="add .gitignore">
+      <created>1652449607632</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1652449607632</updated>
+    </task>
+    <task id="LOCAL-00006" summary="introduce register payment method on OracleLightningNetwork.py">
+      <created>1652453847491</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1652453847491</updated>
+    </task>
+    <task id="LOCAL-00007" summary="adding settlement_payment in OracleLightningNetwork &#10;&#10;first stub of a method as described in  #16 &#10;Still needs to be tested">
+      <created>1652456234460</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1652456234460</updated>
+    </task>
+    <task id="LOCAL-00008" summary="rewriting setter for `actual_liquidity` using properties (python way)">
+      <created>1652475180865</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1652475180865</updated>
+    </task>
+    <task id="LOCAL-00009" summary="adjust channels in both directions when payment is made">
+      <created>1652710744391</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1652710744391</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Settlement of onions with partial payments only after all onions were routed successfully">
+      <created>1652711108081</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1652711108082</updated>
+    </task>
+    <task id="LOCAL-00011" summary="deletion of unused import">
+      <created>1652716785098</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1652716785098</updated>
+    </task>
+    <task id="LOCAL-00012" summary="verbosity option for pickhardt_pay&#10;statistics (round_verbosity) can be added for each round of payment attempts and/or can be added as a final summary (summary).">
+      <created>1652784931998</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1652784931998</updated>
+    </task>
+    <task id="LOCAL-00013" summary="verbosity option for pickhardt_pay&#10;statistics (round_verbosity) can be added for each round of payment attempts and/or can be added as a final summary (summary).">
+      <created>1652784964534</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1652784964534</updated>
+    </task>
+    <task id="LOCAL-00014" summary="shell for a Payment Class">
+      <created>1652800677719</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1652800677719</updated>
+    </task>
+    <task id="LOCAL-00015" summary="shell for a Payment Class for issue #20">
+      <created>1652801571444</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1652801571444</updated>
+    </task>
+    <task id="LOCAL-00016" summary="shell for as Attempt Class for issue #20">
+      <created>1652803834278</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1652803834278</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Indroduction of Payment and Attempt class, refactoring. Cleenup still necessary">
+      <created>1653006688148</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1653006688149</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Indroduction of Payment and Attempt class, refactoring.">
+      <created>1653060806933</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1653060806933</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Introduction of PaymentClass and AttemptClass, refactoring.">
+      <created>1653060841892</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1653060841892</updated>
+    </task>
+    <task id="LOCAL-00020" summary="error fixing, semantic changes and refinement of Payment ant Attempt class">
+      <created>1653562567413</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1653562567413</updated>
+    </task>
+    <task id="LOCAL-00021" summary="adding types in methods for Attempt and Payment Class and amending relative paths on imports">
+      <created>1653566833232</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1653566833232</updated>
+    </task>
+    <task id="LOCAL-00022" summary="initializes fee and probability w/ none (instead of -1) #20">
+      <created>1653823380095</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1653823380095</updated>
+    </task>
+    <task id="LOCAL-00023" summary="adjustment of relative paths for modules in import">
+      <created>1653823512735</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1653823512735</updated>
+    </task>
+    <task id="LOCAL-00024" summary="extending .gitignore">
+      <created>1653835130859</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1653835130859</updated>
+    </task>
+    <task id="LOCAL-00025" summary="correcting tipo for gitignore">
+      <created>1653836687429</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1653836687429</updated>
+    </task>
+    <task id="LOCAL-00026" summary="init for documentation">
+      <created>1653838093091</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1653838093091</updated>
+    </task>
+    <task id="LOCAL-00027" summary="configuration updated">
+      <created>1653840879999</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1653840879999</updated>
+    </task>
+    <task id="LOCAL-00028" summary="correction in filter function for Attempt.Status #24">
+      <created>1653859770674</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1653859770674</updated>
+    </task>
+    <task id="LOCAL-00029" summary="documentation setup&#10;resources still missing - is there a way to move .md into documentation?">
+      <created>1653867985519</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1653867985520</updated>
+    </task>
+    <task id="LOCAL-00030" summary="get Renes version">
+      <created>1653903126786</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1653903126787</updated>
+    </task>
+    <task id="LOCAL-00031" summary="include readthedocs config file">
+      <created>1653909438008</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1653909438009</updated>
+    </task>
+    <task id="LOCAL-00032" summary="changing menu structure">
+      <created>1653913920222</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1653913920223</updated>
+    </task>
+    <task id="LOCAL-00033" summary="trying to solve empty menu items with configuration">
+      <created>1653915867966</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1653915867966</updated>
+    </task>
+    <task id="LOCAL-00034" summary="minor errors fixed">
+      <created>1653916539536</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1653916539536</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="requirements.txt" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/documentation" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="main" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="*" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$" />
+    </ignored-roots>
+    <MESSAGE value="Settlement of onions with partial payments only after all onions were routed successfully" />
+    <MESSAGE value="deletion of unused import" />
+    <MESSAGE value="verbosity option for pickhardt_pay&#10;statistics (round_verbosity) can be added for each round of payment attempts and/or can be added as a final summary (summary)." />
+    <MESSAGE value="shell for a Payment Class" />
+    <MESSAGE value="shell for a Payment Class for issue #20" />
+    <MESSAGE value="shell for as Attempt Class for issue #20" />
+    <MESSAGE value="Indroduction of Payment and Attempt class, refactoring. Cleenup still necessary" />
+    <MESSAGE value="cleaning up of Attempt and Payment class and corresponding usages" />
+    <MESSAGE value="Indroduction of Payment and Attempt class, refactoring." />
+    <MESSAGE value="Introduction of PaymentClass and AttemptClass, refactoring." />
+    <MESSAGE value="error fixing, semantic changes and refinement of Payment ant Attempt class" />
+    <MESSAGE value="adding types in methods for Attempt and Payment Class and amending relative paths on imports" />
+    <MESSAGE value="initializes fee and probability w/ none (instead of -1) #20" />
+    <MESSAGE value="adjustment of relative paths for modules in import" />
+    <MESSAGE value="extending .gitignore" />
+    <MESSAGE value="correcting tipo for gitignore" />
+    <MESSAGE value="init for documentation" />
+    <MESSAGE value="configuration updated" />
+    <MESSAGE value="correction in filter function for Attempt.Status #24" />
+    <MESSAGE value="documentation setup&#10;resources still missing - is there a way to move .md into documentation?" />
+    <MESSAGE value="get Renes version" />
+    <MESSAGE value="include readthedocs config file" />
+    <MESSAGE value="changing menu structure" />
+    <MESSAGE value="trying to solve empty menu items with configuration" />
+    <MESSAGE value="minor errors fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="minor errors fixed" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/pickhardtpayments$ChannelDepletionSimulator.coverage" NAME="ChannelDepletionSimulator Coverage Results" MODIFIED="1652447304457" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/pickhardtpayments$basicexample.coverage" NAME="basicexample Coverage Results" MODIFIED="1653867799689" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/examples" />
+    <SUITE FILE_PATH="coverage/pickhardtpayments$create_Sphinx_Documentation.coverage" NAME="create Sphinx Documentation Coverage Results" MODIFIED="1652796803819" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+</project>

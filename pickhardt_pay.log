@@ -1,0 +1,11 @@
+12:08:16.526 | INFO | *** new pickhardt payment ***
+12:11:36.257 | INFO | *** new pickhardt payment ***
+12:12:56.275 | INFO | *** new pickhardt payment ***
+12:14:21.871 | INFO | *** new pickhardt payment ***
+12:15:09.601 | INFO | *** new pickhardt payment ***
+12:18:40.519 | INFO | *** new pickhardt payment ***
+12:18:42.212 | DEBUG | fee: {attempt.routing_fee} msat, p = {attempt.probability:.4%}, amount: {attempt.amount}
+12:18:42.212 | DEBUG | fee: {attempt.routing_fee} msat, p = {attempt.probability:.4%}, amount: {attempt.amount}
+12:18:42.212 | DEBUG | fee: {attempt.routing_fee} msat, p = {attempt.probability:.4%}, amount: {attempt.amount}
+12:18:44.149 | DEBUG | fee: {attempt.routing_fee} msat, p = {attempt.probability:.4%}, amount: {attempt.amount}
+12:18:44.149 | DEBUG | fee: {attempt.routing_fee} msat, p = {attempt.probability:.4%}, amount: {attempt.amount}

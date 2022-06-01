@@ -22,7 +22,7 @@ class OracleChannel(Channel):
     @property
     def actual_liquidity(self):
         """
-        Tells us the actual liquidity according to the oracle. 
+        Tells us the actual liquidity according to the oracle.
 
         This is useful for experiments but must of course not be used in routing and is also
         not available if mainnet remote channels are being used.
@@ -41,6 +41,7 @@ class OracleChannel(Channel):
         else:
             raise ValueError("Oops! The amount to be assigned to channel liquidity is negative or higher than capacity")
 
+
     def can_forward(self, amt: int):
         """
         check if the oracle channel can forward a certain amount
@@ -49,3 +50,7 @@ class OracleChannel(Channel):
             return True
         else:
             return False
+
+    # setter for actual liquidity
+    def set_actual_liquidity(self, amt: int):
+        self._actual_liquidity = amt
