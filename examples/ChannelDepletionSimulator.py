@@ -107,7 +107,7 @@ def create_payment_set(_uncertainty_network, _number_of_payments, amount) -> lis
 # payment_set = create_payment_set(uncertainty_network, number_of_payments, mean_payment_amount)
 # logging.debug("Payments:\n%s", json.dumps(payment_set, indent=4, cls=PaymentEncoder))
 
-with open("10_payments.json") as jsonFile:
+with open("failing_payments.json") as jsonFile:
     payment_set = json.load(jsonFile)
     jsonFile.close()
 
@@ -117,7 +117,7 @@ c = 0
 successful_payments = 0
 failed_payments = 0
 for payment in payment_set:
-    # create new payment session
+    # create new payment session - will later be moved before payment loop to simulate sequence of payments
     sim_session = SyncPaymentSession(oracle_lightning_network, uncertainty_network, prune_network=False)
     # we need to make sure we forget all learnt information on the Uncertainty Network
     sim_session.forget_information()  # TODO decide how often and when to forget information
