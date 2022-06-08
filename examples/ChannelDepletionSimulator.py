@@ -104,8 +104,8 @@ def create_payment_set(_uncertainty_network, _number_of_payments, amount) -> lis
 
 
 # + Creation of a collection of N payments (src, rcv, amount)
-payment_set = create_payment_set(uncertainty_network, number_of_payments, mean_payment_amount)
-logging.debug("Payments:\n%s", json.dumps(payment_set, indent=4, cls=PaymentEncoder))
+# payment_set = create_payment_set(uncertainty_network, number_of_payments, mean_payment_amount)
+# logging.debug("Payments:\n%s", json.dumps(payment_set, indent=4, cls=PaymentEncoder))
 
 with open("4_nodes_5000_payments_10000_mean_amount.json") as jsonFile:  # failing_payments.json
     payment_set = json.load(jsonFile)
@@ -127,6 +127,7 @@ for payment in payment_set:
     logging.debug(f"now sending {payment['_total_amount']} sats from {payment['_sender']} to {payment['_receiver']}")
 
     ret = sim_session.pickhardt_pay(payment['_sender'], payment['_receiver'], payment['_total_amount'], mu=0, base=0)
+    sim_session.forget_information()
     if ret > 0:
         successful_payments += 1
         logging.info("Payment was successful.")
