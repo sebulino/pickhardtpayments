@@ -37,18 +37,18 @@ logging.info('*** new payment simulation ***')
 
 # *** Setup ***
 # + Definition of network that serves as OracleLightningNetwork
-# channel_graph = ChannelGraph("examples/channels.sample.json")
-channel_graph = ChannelGraph("listchannels20220412.json")
+channel_graph = ChannelGraph("examples/channels.sample.json")
+# channel_graph = ChannelGraph("listchannels20220412.json")
 uncertainty_network = UncertaintyNetwork(channel_graph)
 oracle_lightning_network = OracleLightningNetwork(channel_graph)
 
 nodes = {}
 
 # + Definition of number of payments to be sent
-number_of_payments = 10  # TODO how to decide on number of runs?
+number_of_payments = 5_000  # TODO how to decide on number of runs?
 
 # + Definition of distribution of payment amounts
-mean_payment_amount = 100_000
+mean_payment_amount = 10_000
 
 
 def payment_amount(amount=10_000_000) -> int:
@@ -97,17 +97,17 @@ def create_payment_set(_uncertainty_network, _number_of_payments, amount) -> lis
             p = Payment(_random_nodes[0], _random_nodes[1], payment_amount(amount))
             _payments.append(p)
     # write payments to file
-    json_file = open("payments.json", "w")
+    json_file = open("4_nodes_5000_payments_10000_mean_amount.json", "w")
     json.dump(_payments, json_file, indent=4, cls=PaymentEncoder)
     json_file.close()
     return _payments
 
 
 # + Creation of a collection of N payments (src, rcv, amount)
-# payment_set = create_payment_set(uncertainty_network, number_of_payments, mean_payment_amount)
-# logging.debug("Payments:\n%s", json.dumps(payment_set, indent=4, cls=PaymentEncoder))
+payment_set = create_payment_set(uncertainty_network, number_of_payments, mean_payment_amount)
+logging.debug("Payments:\n%s", json.dumps(payment_set, indent=4, cls=PaymentEncoder))
 
-with open("failing_payments.json") as jsonFile:
+with open("4_nodes_5000_payments_10000_mean_amount.json") as jsonFile:  # failing_payments.json
     payment_set = json.load(jsonFile)
     jsonFile.close()
 
@@ -116,11 +116,12 @@ logging.info("A total of {} payments.".format(len(payment_set)))
 c = 0
 successful_payments = 0
 failed_payments = 0
+# create new payment session - will later be moved before payment loop to simulate sequence of payments
+sim_session = SyncPaymentSession(oracle_lightning_network, uncertainty_network, prune_network=False)
+# we need to make sure we forget all learnt information on the Uncertainty Network
+sim_session.forget_information()  # TODO decide how often and when to forget information
+
 for payment in payment_set:
-    # create new payment session - will later be moved before payment loop to simulate sequence of payments
-    sim_session = SyncPaymentSession(oracle_lightning_network, uncertainty_network, prune_network=False)
-    # we need to make sure we forget all learnt information on the Uncertainty Network
-    sim_session.forget_information()  # TODO decide how often and when to forget information
     c += 1
     logging.info("*********** Payment {} ***********".format(c))
     logging.debug(f"now sending {payment['_total_amount']} sats from {payment['_sender']} to {payment['_receiver']}")

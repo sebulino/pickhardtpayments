@@ -115,10 +115,6 @@ class SyncPaymentSession(SyncSimulatedPaymentSession):
         entropy_end = self._uncertainty_network.entropy()
         logging.info("SUMMARY of THIS Payment from Payment set in Simulation:")
         logging.info("=======================================================")
-        if payment.successful:
-            logging.debug("Payment was successful.")
-        else:
-            logging.debug("Payment failed.")
         logging.info("Rounds of mcf-computations: \t%s", cnt)
         logging.info("Number of attempts made:\t\t%s", len(payment.attempts))
         logging.info("Number of failed attempts: \t%s", len(payment.filter_attempts(AttemptStatus.FAILED)))
@@ -131,4 +127,10 @@ class SyncPaymentSession(SyncSimulatedPaymentSession):
         logging.debug("fee for settlement of delivery: {:8.3f} sat --> {} ppm".format(
             payment.settlement_fees / 1000, int(payment.settlement_fees * 1000 / payment.total_amount)))
         logging.debug("used mu: \t%s", mu)
-        return 1
+        if payment.successful:
+            logging.debug("Payment was successful.")
+            return 1
+        else:
+            logging.debug("Payment failed.")
+            return -1
+
