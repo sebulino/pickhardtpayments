@@ -92,7 +92,6 @@ class SyncPaymentSession(SyncSimulatedPaymentSession):
                     sub_payment.attempts)
 
                 logging.debug("Runtime of flow computation: {:4.2f} sec ".format(runtime))
-                logging.debug("- - - - - - - - - - - - - - - - - - -")
                 total_number_failed_paths += number_failed_paths
                 total_fees += paid_fees
 
@@ -106,7 +105,8 @@ class SyncPaymentSession(SyncSimulatedPaymentSession):
                     self._oracle.settle_payment(onion.path, onion.amount)
                     onion.status = AttemptStatus.SETTLED
                 except Exception as e:
-                    print(e)
+                    logging.error("Error when trying to settle (oracle.settle_payment)")
+                    logging.error(e)
                     return -1
             payment.successful = True
 
