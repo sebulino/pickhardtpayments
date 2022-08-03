@@ -4,6 +4,8 @@ SyncSimulatedPaymentSession.py
 The core module of the pickhardt payment project.
 An example payment is executed and statistics are run.
 """
+import ndjson
+
 from .Payment import Payment, MCFSolverError
 from .UncertaintyNetwork import UncertaintyNetwork
 from .OracleLightningNetwork import OracleLightningNetwork
@@ -107,6 +109,7 @@ class SyncSimulatedPaymentSession:
 
         """
         session_logger.info('*** new pickhardt payment ***')
+        probability_too_low = False
 
         numeric_level = logging.getLevelName(loglevel.upper())
         if not isinstance(numeric_level, int):
@@ -121,7 +124,7 @@ class SyncSimulatedPaymentSession:
         # a better stop criteria would be if we compute infeasible flows or if the probabilities
         # are too low or residual amounts decrease to slowly
         # TODO add 'expected value' to break condition for loop
-        while payment.residual_amount > 0 and payment.pickhardt_payment_rounds <= 15:
+        while payment.residual_amount > 0 and payment.pickhardt_payment_rounds <= 15 and not probability_too_low:
             payment.increment_pickhardt_payment_rounds()
             sub_payment = Payment(self.uncertainty_network, self.oracle_network, payment.sender, payment.receiver,
                                   payment.residual_amount, mu, base)
@@ -130,7 +133,7 @@ class SyncSimulatedPaymentSession:
             try:
                 sub_payment.initiate()
             except MCFSolverError as err:
-                logging.info(err)
+                logging.error(err)
                 break
 
             # Try to send amounts in attempts and registers if success or not
@@ -140,6 +143,10 @@ class SyncSimulatedPaymentSession:
             # run some simple statistics and depict them
             sub_payment.evaluate_attempts()
 
+            if sub_payment.attempts[-1].probability < 0.1:
+                probability_too_low = True
+                logging.warning("probability in last attempt too low")
+
             # add attempts of sub_payment to payment
             payment.register_sub_payment(sub_payment)
 
@@ -147,8 +154,13 @@ class SyncSimulatedPaymentSession:
         if payment.residual_amount == 0:
             payment.execute()
         else:
-            session_logger.warning("Payment failed!")
+            session_logger.info("Payment failed!")
             session_logger.info("residual amount: {:>10,} sats".format(payment.residual_amount))
 
         # Final Stats
         payment.get_summary()
+
+        if payment.residual_amount:
+            return -1
+        else:
+            return 1
