@@ -83,7 +83,7 @@ def create_payment_set(_uncertainty_network, _number_of_payments, amount) -> lis
 
 # + Creation of a collection of N payments (src, rcv, amount)
 # payments = create_payment_set(uncertainty_network, number_of_payments, mean_payment_amount)
-payment_set = ndjson.load(open("examples/payments_small_graph.ndjson", "r"))
+payment_set = ndjson.load(open("examples/same_payments_small_graph.ndjson", "r"))
 logging.debug("Payments:\n%s", ndjson.dumps(payment_set))
 logger.info("A total of {} payments.".format(len(payment_set)))
 
