@@ -278,40 +278,121 @@ class UncertaintyChannel(Channel):
         return pieces
     """
 
-    def update_knowledge(self, attempt, return_channel):
+    def update_knowledge(self, amount: int, return_channel, probing_successful: bool):
         """
-        updates our knowledge about the channel if we tried to probe it for amount `amt`
+        Updates our knowledge about the channel after probing with 'send_onion'.
 
-        This API works only if we have an Oracle that allows to ask the actual liquidity of a channel
-        In mainnet Lightning our oracle will not work on a per_channel level. This will change the data
-        flow. Here for simplicity of the simulation we make use of the Oracle on a per channel level
+        'send_onion' already placed the amount as inflight on the UncertaintyChannel. Consequently, the amount is
+        not needed.
+
+        # This API works only if we have an Oracle that allows to ask the actual liquidity of a channel
+        # In mainnet Lightning our oracle will not work on a per_channel level. This will change the data
+        # flow. Here for simplicity of the simulation we make use of the Oracle on a per channel level
 
         :param amt: The amount that went through when probing the channel, usually in_flight amount plus attempt amount!
         :type: amt
+        :param return_channel: The UncertaintyChannel in the return direction, needed to adjust knowledge there.
+        :type: UncertaintyChannel
         :param probing_successful: Could the amount be sent?
         :type: bool
         """
-        amt = attempt.amount
         # Fixme: here is a mistake - status and probing_result are different!
+        #
+        # send_onion tries to send an amount through the channel and depending on the amount, the following
+        # situations A, B and C can occur:
+        #
+        # channel:
+        #         A             B                          C
+        #  |......i......|......i...................|......i................|
+        #  |             |                          |                       |
+        #  0          min_liq                    max_liq                    channel_capacity (cap)
+        #
+        #
+        # return_channel:
+        #       cap - C                             cap - B       cap - A
+        #  |......i................|...................i......|......i......|
+        #  |                       |                          |             |
+        #  0                    min_liq                     max_liq         channel_capacity (cap)
+        #                (cap - channel_max_liq)      (cap - channel_min_liq)
+        #
+        #
+        # If **probing_successful**, then all inflights on the UncertaintyChannel did go through. This means that there
+        # is at minimum an amount of A/B/C as available liquidity in the channel. In consequence, I can learn about the
+        # minimum liquidity in the channel, but nothing about the maximum (unless it was below A/B/C)
+        # The tested amount could fall in one of three possible cases:
+        # A: min_liquidity in channel needs to be moved to A, max_liquidity is fine.
+        # B: min_liquidity in channel needs to be moved to B, max_liquidity is fine.
+        # C: min_liquidity in channel need to be moved to C, max_liquidity needs to be scrapped (safety measure,
+        #    it seemed to have gone completely wrong... ok, probably just payments from other nodes we were unaware of).
+        # This means:
+        #   * minimum liquidity is max of previous min liquidity and inflights.
+        #   * maximum liquidity stays as is, or if inflights are higher than previous max liquidity it's set to
+        #     capacity.
+        #
+        # For the return_channel: I know that I can at maximum receive an amount of (capacity - A/B/C). In consequence,
+        # I can learn about my maximum, but nothing about my minimum (unless it was off and above capacity - inflights)
+        # The tested amount could fall in one of three possible cases:
+        # A: max_liquidity is fine, min_liquidity is at least capacity - A,
+        # B: max_liquidity is the lower of current max_liquidity or (cap - B),
+        #    min_liquidity is fine.
+        # C: max_liquidity is the lower of current max_liquidity or (cap - C), and
+        #    min_liquidity in return_channel should better be scrapped (safety measure)
+        # This means:
+        #   * minimum liquidity stays as is, or if (capacity - inflights) is lower than previous min_liquidity, then
+        #     it's reset to 0.
+        #   * maximum liquidity is the minimum of the previous maximum liquidity and (capacity - inflights)
+        #
+        #
+        # If probing is **not successful**, then the sum of inflights on the UncertaintyChannel did not go through.
+        # In consequence, I can learn nothing about my maximum liquidity, unless it was above A/B/C.
+        # The situation can be one of three possible cases on the channel:
+        # A: min_liquidity needs to be scrapped (safety measure) and max_liquidity in channel need to be moved to A.
+        # B: min_liquidity in channel is probably right, max_liquidity needs to be set to B.
+        # C: min_liquidity in channel is probably right, and max_liquidity was probably right.
+        # This means:
+        #   * maximum liquidity is minimum of previous maximum liquidity and inflights.
+        #   * minimum liquidity stays as is, unless inflights are lower than previous min liquidity. Then it's set to 0.
+        #
+        # For the return_channel: I know that I can at minimum receive an amount of capacity - A/B/C. In consequence,
+        # I can learn nothing about my maximum, unless it was set wrong, i.e. lower than capacity - A/B/C.
+        # A: min_liquidity is at least (capacity - A). max_liquidity was probably all wrong and should be set to
+        #    capacity as a safety measure.
+        # B: min_liquidity is at least (capacity - B). max_liquidity is probably right.
+        # C: min_liquidity in return_channel should larger of (capacity - C) and previous min_liquidity. max_liquidity
+        #    is probably right.
+        # This means:
+        #    * minimum liquidity is max of (capacity - inflights) and previous minimum liquidity
+        #    * maximum liquidity should be set to capacity as a safety measure if (capacity - inflights) is larger than
+        #      maximum liquidity.
 
-        if attempt.status == AttemptStatus.INFLIGHT:
-            self.min_liquidity = max(self.min_liquidity, self.in_flight + amt)
-            self.max_liquidity = max(self.max_liquidity, self.in_flight + amt)
+
+        if probing_successful:
+            self.min_liquidity = max(self.min_liquidity, self.in_flight)
+            if self.in_flight > self.max_liquidity:
+                self.max_liquidity = self.capacity
+            logging.warning(f"placed {self.min_liquidity} as min and {self.max_liquidity} as max liquidity, "
+                            f"while {self.in_flight} is inflight")
+
             if return_channel:
-                return_channel.min_liquidity = min(return_channel.min_liquidity,
-                                                        return_channel.capacity - self.in_flight - amt)
                 return_channel.max_liquidity = min(return_channel.max_liquidity,
-                                                        return_channel.capacity - self.in_flight - amt)
+                                                   return_channel.capacity - self.in_flight,
+                                                   return_channel.capacity)
+                if return_channel.capacity - self.in_flight < return_channel.min_liquidity:
+                    return_channel.min_liquidity = 0
+                logging.warning(f"return_channel.min_liquidity {return_channel.min_liquidity}, "
+                                f"return_channel.max_liquidity {return_channel.max_liquidity}")
             else:
                 logging.debug(f"no return channel in UncertaintyNetwork for {self.short_channel_id}")
-        elif attempt.status == AttemptStatus.FAILED:
-            self.min_liquidity = min(self.min_liquidity, self.in_flight + amt)
-            self.max_liquidity = min(self.max_liquidity, self.in_flight + amt)
+        elif not probing_successful:
+            self.max_liquidity = min(self.max_liquidity, self.in_flight)
+            if self.in_flight < self.min_liquidity:
+                self.min_liquidity = 0
+
             if return_channel:
                 return_channel.min_liquidity = max(return_channel.min_liquidity,
-                                                        return_channel.capacity - amt)
-                return_channel.max_liquidity = max(return_channel.max_liquidity,
-                                                        return_channel.capacity - amt)
+                                                   return_channel.capacity - self.in_flight)
+                if return_channel.max_liquidity < return_channel.capacity - self.in_flight:
+                    return_channel.max_liquidity = return_channel.capacity
             else:
                 logging.debug(f"no return channel in UncertaintyNetwork for {self.short_channel_id}")
         else:

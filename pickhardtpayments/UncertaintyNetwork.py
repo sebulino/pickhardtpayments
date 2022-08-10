@@ -122,6 +122,9 @@ class UncertaintyNetwork(ChannelGraph):
         """
         receives a payment attempt and adjusts the balances of the UncertaintyChannels and its reverse channels
         along the path.
+
+        #TODO: I'm not really happy with the naming of the method, actually. because it's not really a settlement,
+        but more like registering it, allocating HTLCs. (seb)
         """
         for uncertainty_channel in attempt.path:
             # remove in_flight amount from UncertaintyChannel
