@@ -489,42 +489,33 @@ class Payment:
 
     def attempt_payments(self):
         """
-        We attempt all planned payments and test the success against the oracle in particular this
-        method changes - depending on the outcome of each payment - our belief about the uncertainty
-        in the UncertaintyNetwork.
-        successful onions are collected to be transacted on the OracleNetwork if complete payment can be delivered
+        We try all planned payments by testing the OracleNetwork. 'send_onion' returns the success status and if it's
+        positive it will have placed inflight amounts in the OracleNetwork as well as the UncertaintyNetwork.
+        That in this step the inflights are placed on the channels is important to update the knowledge about the
+        UncertaintyChannel ranges appropriately. (Inflights are later removed when the payment is settled)
 
-        For each path the Attempt is registered as planned and the amount is registered in the uncertainty network as
-        in_flight (better name can be determined) On the Attempts send_onion() is called to test the Attempt against
-        the OracleNetwork. Every failed attempt from send_onion is then updated as AttemptStatus.FAILED and the
-        in_flight amounts are removed from the UncertaintyNetwork. For every successful call of send_onion() the amount
-        is registered in the OracleNetwork as in_flight and the AttemptStatus is set to INFLIGHT. The amounts have
-        been allocated in the UncertaintyNetwork already, so no change is necessary here.
+        Knowledge about the payment attempts is updated in the Uncertainty Channels.
 
-        If onions failed, the next round is started for the remaining amount in the PaymentSession.
-
+        Each successful attempt reduces the outstanding amount (residual_amount) of the payment.
         """
         for attempt in self.filter_attempts(AttemptStatus.PLANNED):
             # TODO: add callback, eventloop. or with future, spawning threads.
 
-            # probe channel in Oracle Network
+            # probe channel in Oracle Network and leave inflights if successful
             success_of_probe, erring_channel = self._oracle_network.send_onion(attempt)
             logger.debug(f"attempting payments successful: {success_of_probe} for {attempt}")
 
-            # TODO: learn: adjust knowledge about channels
             for uncertainty_channel in iter(attempt.path):
                 return_channel = self.uncertainty_network.get_channel(uncertainty_channel.dest,
                                                                       uncertainty_channel.src,
                                                                       uncertainty_channel.short_channel_id)
                 if uncertainty_channel == erring_channel:
-                    uncertainty_channel.update_knowledge(attempt, return_channel)
+                    uncertainty_channel.update_knowledge(attempt.amount, return_channel, False)
                     break
-                uncertainty_channel.update_knowledge(attempt, return_channel)
+                uncertainty_channel.update_knowledge(attempt.amount, return_channel, True)
 
             # when successful, place amount as additional in_flight on UncertaintyChannels along path
             if success_of_probe:
-                for uncertainty_channel in attempt.path:
-                    uncertainty_channel.allocate_inflights(attempt.amount)
                 self._residual_amount -= attempt.amount
 
             logger.debug(
@@ -587,15 +578,34 @@ class Payment:
     def execute(self) -> int:
         """
         Executes the Payment.
-        This is the last step in the payment loop. After probing the attempts the current in_flight attempts are
-        settled. To achieve this, settle_attempt() is called on the Oracle Network as well as on the Uncertainty
-        Network. Here the in_flights should be removed and the channel balances - or the belief about the channel
-        balances - are adjusted.
+        This is the last step in the payment loop. The current in_flight attempts are settled. To achieve this,
+        settle_attempt() is called on the Oracle Network as well as on the Uncertainty Network to settle the attempt.
+        The in_flights are removed in OracleNetworks and UncertaintyNetwork for this Attempt and the channel balances
+        - or the belief about the channel balances - are adjusted.
 
         """
+        # Fixme: adjust UncertaintyNetwork - reduce minimum by payment amount, increase maximum on return channel
         logger.info("Executing Payment...")
         logger.debug("settling {} Attempts:".format(len(list(self.filter_attempts(AttemptStatus.INFLIGHT)))))
         for attempt in self.filter_attempts(AttemptStatus.INFLIGHT):
+            for channel in attempt.path:
+                logger.debug("(04) {}-{} Uncertainty Range:\t\t[{:>10,} ; {:>10,}]\t\tinflight {:>10,};"
+                             "\tcond_cap: {:>10,}".format(channel.src[:4],
+                                                          channel.dest[:4],
+                                                          channel.min_liquidity,
+                                                          channel.max_liquidity,
+                                                          channel.in_flight,
+                                                          channel.conditional_capacity))
+                return_channel = self.uncertainty_network.get_channel(channel.dest, channel.src,
+                                                                      channel.short_channel_id)
+                if return_channel:
+                    logger.debug("(04) {}-{} Uncertainty Range:\t\t[{:>10,} ; {:>10,}]\t\tinflight {:>10,};"
+                                 "\tcond_cap: {:>10,}".format(return_channel.src[:4],
+                                                              return_channel.dest[:4],
+                                                              return_channel.min_liquidity,
+                                                              return_channel.max_liquidity,
+                                                              return_channel.in_flight,
+                                                              return_channel.conditional_capacity))
             try:
                 logger.debug("settling OracleNetwork...")
                 self._oracle_network.settle_attempt(attempt)  # updates in_flights and liquidity in both paths
@@ -603,24 +613,7 @@ class Payment:
                 self._uncertainty_network.settle_attempt(attempt)  # removes along path
                 attempt.status = AttemptStatus.SETTLED
                 logger.debug("settled. Status changed to settled")
-                for channel in attempt.path:
-                    logger.debug("(04) {}-{} Uncertainty Range:\t\t[{:>10,} ; {:>10,}]\t\tinflight {:>10,};"
-                                "\tcond_cap: {:>10,}".format(channel.src[:4],
-                                                             channel.dest[:4],
-                                                             channel.min_liquidity,
-                                                             channel.max_liquidity,
-                                                             channel.in_flight,
-                                                             channel.conditional_capacity))
-                    return_channel = self.uncertainty_network.get_channel(channel.dest, channel.src,
-                                                                          channel.short_channel_id)
-                    if return_channel:
-                        logger.debug("(04) {}-{} Uncertainty Range:\t\t[{:>10,} ; {:>10,}]\t\tinflight {:>10,};"
-                                    "\tcond_cap: {:>10,}".format(return_channel.src[:4],
-                                                                 return_channel.dest[:4],
-                                                                 return_channel.min_liquidity,
-                                                                 return_channel.max_liquidity,
-                                                                 return_channel.in_flight,
-                                                                 return_channel.conditional_capacity))
+
             except Exception as e:
                 logger.error("An error occurred when executing payment!")
                 logger.error(e)
@@ -631,6 +624,24 @@ class Payment:
         self.successful = True
         self._end_time = time.time()
         logger.debug("payment executed!")
+        for channel in attempt.path:
+            logger.debug("(05) {}-{} Uncertainty Range:\t\t[{:>10,} ; {:>10,}]\t\tinflight {:>10,};"
+                         "\tcond_cap: {:>10,}".format(channel.src[:4],
+                                                      channel.dest[:4],
+                                                      channel.min_liquidity,
+                                                      channel.max_liquidity,
+                                                      channel.in_flight,
+                                                      channel.conditional_capacity))
+            return_channel = self.uncertainty_network.get_channel(channel.dest, channel.src,
+                                                                  channel.short_channel_id)
+            if return_channel:
+                logger.debug("(04) {}-{} Uncertainty Range:\t\t[{:>10,} ; {:>10,}]\t\tinflight {:>10,};"
+                             "\tcond_cap: {:>10,}".format(return_channel.src[:4],
+                                                          return_channel.dest[:4],
+                                                          return_channel.min_liquidity,
+                                                          return_channel.max_liquidity,
+                                                          return_channel.in_flight,
+                                                          return_channel.conditional_capacity))
         return 0
 
     def get_summary(self):

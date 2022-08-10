@@ -124,9 +124,19 @@ class UncertaintyNetwork(ChannelGraph):
         along the path.
         """
         for uncertainty_channel in attempt.path:
-            # no adjustment on minimum and maximum liquidity of channel and return channel necessary, because
-            # this has already been learnt in send_onion when updating knowledge after info about success of send_onion.
-
             # remove in_flight amount from UncertaintyChannel
             uncertainty_channel.allocate_inflights(-attempt.amount)
+
+            # adjustment of minimum and maximum liquidity in channel
+            # reducing minimum liquidity, because this has now been moved out of the channel. maximum also comes down
+            # the return channel mirrors this
+            uncertainty_channel.min_liquidity = max(uncertainty_channel.min_liquidity - attempt.amount, 0)
+            uncertainty_channel.max_liquidity = max(uncertainty_channel.max_liquidity - attempt.amount, 0)
+
+            return_channel = self.get_channel(uncertainty_channel.dest,
+                                              uncertainty_channel.src,
+                                              uncertainty_channel.short_channel_id)
+            return_channel.min_liquidity = min(return_channel.min_liquidity + attempt.amount, return_channel.capacity)
+            return_channel.max_liquidity = min(return_channel.max_liquidity + attempt.amount, return_channel.capacity)
+
         return 0

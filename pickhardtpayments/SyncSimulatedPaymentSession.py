@@ -70,7 +70,7 @@ class SyncSimulatedPaymentSession:
         self._uncertainty_network.activate_network_wide_uncertainty_reduction(
             n, self._oracle_network)
 
-    def pickhardt_pay(self, src, dest, amt=1, mu=1, base=DEFAULT_BASE_THRESHOLD, loglevel="info"):
+    def pickhardt_pay(self, src, dest, amt=1, mu=1, base=DEFAULT_BASE_THRESHOLD, loglevel="debug"):
         """
         Conducts one payment with the pickhardt payment methodology.
 
@@ -115,7 +115,8 @@ class SyncSimulatedPaymentSession:
         if not isinstance(numeric_level, int):
             raise ValueError('Invalid log level: %s' % loglevel)
         session_logger.setLevel(numeric_level)
-
+        session_logger.setLevel(10)
+        logging.info(f"log level is {numeric_level}")
         # Initialise Payment
         payment = Payment(self.uncertainty_network, self.oracle_network, src, dest, amt, mu, base)
 
