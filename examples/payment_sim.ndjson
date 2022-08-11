@@ -1,6 +1,8 @@
 {"sender": "D", "receiver": "B", "amount": 50000, "success": 1}
 {"sender": "D", "receiver": "B", "amount": 50000, "success": 1}
 {"sender": "D", "receiver": "B", "amount": 50000, "success": 1}
+{"sender": "D", "receiver": "B", "amount": 50000, "success": 1}
+{"sender": "D", "receiver": "B", "amount": 50000, "success": -1}
 {"sender": "D", "receiver": "B", "amount": 50000, "success": -1}
 {"sender": "D", "receiver": "B", "amount": 50000, "success": -1}
 {"sender": "D", "receiver": "B", "amount": 50000, "success": -1}

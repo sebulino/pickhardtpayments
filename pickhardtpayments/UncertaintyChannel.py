@@ -365,7 +365,6 @@ class UncertaintyChannel(Channel):
         #    * maximum liquidity should be set to capacity as a safety measure if (capacity - inflights) is larger than
         #      maximum liquidity.
 
-
         if probing_successful:
             self.min_liquidity = max(self.min_liquidity, self.in_flight)
             if self.in_flight > self.max_liquidity:
