@@ -155,6 +155,7 @@ class SyncSimulatedPaymentSession:
         if payment.residual_amount == 0:
             payment.execute()
         else:
+            # TODO if payment fails: cleanup of inflights in Uncertainty Network
             session_logger.info("Payment failed!")
             session_logger.info("residual amount: {:>10,} sats".format(payment.residual_amount))
 

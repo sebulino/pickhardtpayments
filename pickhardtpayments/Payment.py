@@ -650,6 +650,7 @@ class Payment:
         """
         logger.info("SUMMARY:")
         logger.info("========")
+        logger.info("Payment amount:\t{:>8,}".format(self.total_amount))
         logger.info("Rounds of mcf-computations:\t{:3}".format(self.pickhardt_payment_rounds))
         logger.info("Number of attempts made:\t\t{:3}".format(len(self.attempts)))
         logger.info("Number of failed attempts:\t{:3}".format(len(list(self.filter_attempts(AttemptStatus.FAILED)))))

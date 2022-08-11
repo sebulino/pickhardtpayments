@@ -282,21 +282,42 @@ class UncertaintyChannel(Channel):
         """
         Updates our knowledge about the channel after probing with 'send_onion'.
 
-        'send_onion' already placed the amount as inflight on the UncertaintyChannel. Consequently, the amount is
-        not needed.
+        'send_onion' already placed the amount as inflight on the UncertaintyChannel.
+
+        What can we learn from a successfully sent onion?
+        * If we knew that there was a minimum liquidity greater than 0 on the channel, this liquidity is now reduced.
+        * If there was no knowledge about the minimum liquidity, it is still at zero, because the previous liquidity in
+          the channel is now frozen and thus taken away.
+        * The amount of this attempt has been added to the in_flight amount of the channel, so we know that maximum
+          liquidity is now at most the capacity reduced by the amount of inflights.
+        * Regarding the return channel: We now know that the inflight amount of this channel will be added to the
+          liquidity of the return channel. Thus, minimum liquidity will be increased to at least the in_flight amount.
+          However, we don't know if the minimum liquidity in the return channel already incorporated previous learning
+          and the current inflight amount. but we do know that we have a new maximum liquidity in the channel and the
+          minimum liquidity in the return channel will also be higher than (capacity - the channel's maximum liquidity).
+          If the minimum liquidity in the channel is reduced, this is mirrored in the maximum liquidity of the return
+          channel. Maximum liquidity in the return channel is now capacity minus minimum liquidity in the channel.
+        This might be conservative estimates, maximum can be lower and minimum higher, but at least these are safe
+        assumptions.
+
+        What can we learn from a failing onion?
+        * In the channel, the minimum liquidity estimate was wrong and needs to be moved to the failing amount minus 1
+          or reset completely. We have no further information about the maximum amount that can be sent.
+        * If this amount fails, then we know that at least this amount of liquidity is in the return channel.
+
 
         # This API works only if we have an Oracle that allows to ask the actual liquidity of a channel
         # In mainnet Lightning our oracle will not work on a per_channel level. This will change the data
         # flow. Here for simplicity of the simulation we make use of the Oracle on a per channel level
 
-        :param amt: The amount that went through when probing the channel, usually in_flight amount plus attempt amount!
-        :type: amt
+        :param amount: The amount that went through when probing the channel, usually in_flight amount plus attempt amount!
+        :type: int
         :param return_channel: The UncertaintyChannel in the return direction, needed to adjust knowledge there.
         :type: UncertaintyChannel
         :param probing_successful: Could the amount be sent?
         :type: bool
         """
-        # Fixme: here is a mistake - status and probing_result are different!
+        # Fixme: This reflects the situation BEFORE decreasing liquidity by capturing liquidity in the inflight amonut.
         #
         # send_onion tries to send an amount through the channel and depending on the amount, the following
         # situations A, B and C can occur:
@@ -366,32 +387,25 @@ class UncertaintyChannel(Channel):
         #      maximum liquidity.
 
         if probing_successful:
-            self.min_liquidity = max(self.min_liquidity, self.in_flight)
-            if self.in_flight > self.max_liquidity:
-                self.max_liquidity = self.capacity
+            self.min_liquidity = max(self.min_liquidity - amount, 0)
+            self.max_liquidity = self.max_liquidity - self.in_flight
             logging.warning(f"placed {self.min_liquidity} as min and {self.max_liquidity} as max liquidity, "
                             f"while {self.in_flight} is inflight")
 
             if return_channel:
-                return_channel.max_liquidity = min(return_channel.max_liquidity,
-                                                   return_channel.capacity - self.in_flight,
-                                                   return_channel.capacity)
-                if return_channel.capacity - self.in_flight < return_channel.min_liquidity:
-                    return_channel.min_liquidity = 0
+                return_channel.min_liquidity = max(return_channel.min_liquidity,
+                                                   self.in_flight,
+                                                   self.capacity - self.max_liquidity)
+                return_channel.max_liquidity = return_channel.capacity - self.min_liquidity
                 logging.warning(f"return_channel.min_liquidity {return_channel.min_liquidity}, "
                                 f"return_channel.max_liquidity {return_channel.max_liquidity}")
             else:
                 logging.debug(f"no return channel in UncertaintyNetwork for {self.short_channel_id}")
         elif not probing_successful:
-            self.max_liquidity = min(self.max_liquidity, self.in_flight)
-            if self.in_flight < self.min_liquidity:
-                self.min_liquidity = 0
+            self.min_liquidity = max(min(self.min_liquidity, self.in_flight - 1), 0)
 
             if return_channel:
-                return_channel.min_liquidity = max(return_channel.min_liquidity,
-                                                   return_channel.capacity - self.in_flight)
-                if return_channel.max_liquidity < return_channel.capacity - self.in_flight:
-                    return_channel.max_liquidity = return_channel.capacity
+                return_channel.min_liquidity = max(return_channel.min_liquidity, self.in_flight)
             else:
                 logging.debug(f"no return channel in UncertaintyNetwork for {self.short_channel_id}")
         else:

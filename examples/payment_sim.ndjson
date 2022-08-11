@@ -1,8 +1,12 @@
+{"sender": "D", "receiver": "B", "amount": 60000, "success": 1}
 {"sender": "D", "receiver": "B", "amount": 50000, "success": 1}
-{"sender": "D", "receiver": "B", "amount": 50000, "success": 1}
-{"sender": "D", "receiver": "B", "amount": 50000, "success": 1}
-{"sender": "D", "receiver": "B", "amount": 50000, "success": 1}
+{"sender": "D", "receiver": "B", "amount": 40000, "success": 1}
+{"sender": "D", "receiver": "B", "amount": 60000, "success": -1}
 {"sender": "D", "receiver": "B", "amount": 50000, "success": -1}
+{"sender": "D", "receiver": "B", "amount": 40000, "success": -1}
+{"sender": "D", "receiver": "B", "amount": 60000, "success": -1}
+{"sender": "D", "receiver": "B", "amount": 40000, "success": -1}
+{"sender": "D", "receiver": "B", "amount": 60000, "success": -1}
 {"sender": "D", "receiver": "B", "amount": 50000, "success": -1}
-{"sender": "D", "receiver": "B", "amount": 50000, "success": -1}
-{"sender": "D", "receiver": "B", "amount": 50000, "success": -1}
+{"sender": "D", "receiver": "B", "amount": 40000, "success": -1}
+{"sender": "D", "receiver": "B", "amount": 60000, "success": -1}

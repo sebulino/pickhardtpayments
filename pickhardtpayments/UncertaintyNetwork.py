@@ -129,17 +129,14 @@ class UncertaintyNetwork(ChannelGraph):
         for uncertainty_channel in attempt.path:
             # remove in_flight amount from UncertaintyChannel
             uncertainty_channel.allocate_inflights(-attempt.amount)
+            logging.warning(f"inflights removed from uncertainty channel - {attempt.amount} sats.")
+            # adjustment of minimum and maximum liquidity in UncertaitnyChannels not necessary,
+            # knowledge has already been captured.
 
-            # adjustment of minimum and maximum liquidity in channel
-            # reducing minimum liquidity, because this has now been moved out of the channel. maximum also comes down
-            # the return channel mirrors this
-            uncertainty_channel.min_liquidity = max(uncertainty_channel.min_liquidity - attempt.amount, 0)
-            uncertainty_channel.max_liquidity = max(uncertainty_channel.max_liquidity - attempt.amount, 0)
-
-            return_channel = self.get_channel(uncertainty_channel.dest,
-                                              uncertainty_channel.src,
-                                              uncertainty_channel.short_channel_id)
-            return_channel.min_liquidity = min(return_channel.min_liquidity + attempt.amount, return_channel.capacity)
-            return_channel.max_liquidity = min(return_channel.max_liquidity + attempt.amount, return_channel.capacity)
+            # return_channel = self.get_channel(uncertainty_channel.dest,
+            #                                   uncertainty_channel.src,
+            #                                   uncertainty_channel.short_channel_id)
+            # return_channel.min_liquidity = min(return_channel.min_liquidity + attempt.amount, return_channel.capacity)
+            # return_channel.max_liquidity = min(return_channel.max_liquidity + attempt.amount, return_channel.capacity)
 
         return 0
